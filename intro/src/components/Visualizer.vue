@@ -23,7 +23,7 @@ const closeVisualizer = () => {
 
 <style scoped>
 .visualizer {
-  background-color: lightgreen;
+  background-color: rgba(76, 82, 83, 0.24);
   flex: 1;
   padding: 10px;
   box-sizing: border-box;
@@ -42,4 +42,5 @@ const closeVisualizer = () => {
   cursor: pointer;
 }
 </style>
+
 

@@ -37,6 +37,7 @@ const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
 
+// Aquí solo manejamos el evento de URL y lo emitimos hacia el padre
 const emit = defineEmits(['url-click']);
 
 const handleUrlClick = (url: string) => {
@@ -77,7 +78,7 @@ const handleSendMessage = async (messageText: string) => {
     const serverMessageId = uuidv4();
 
     setTimeout(() => {
-      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://google.es", "https://google.com"] }, isReceived: true });
+      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://google.es"] }, isReceived: true });
 
       progress.value = 100;
       progressDescription.value = 'Completado';
@@ -117,8 +118,10 @@ const handleToggleRecording = (isRecording: boolean) => {
 
 .chat-content {
   flex: 1;
+  width: 55%; /* Ajusta el ancho al 70% */
   overflow-y: auto;
-  padding: 20px 40px 80px 40px; /* Espacio uniforme a la izquierda y derecha */
-  box-sizing: border-box; /* Asegura que el padding se considere en el tamaño total */
+  padding-bottom: 80px;
+  margin: 0 auto; /* Centra el contenido horizontalmente */
 }
 </style>
+
