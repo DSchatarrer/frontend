@@ -1,5 +1,5 @@
 <template>
-  <div class="message" :class="{ 'received': isReceived }">
+  <div class="message" :class="{ 'received': isReceived }" :data-id="jsonContent.data_id">
     <div class="message-content">
       <!-- Aquí decides qué campos del JSON mostrar -->
       <div v-if="jsonContent.text">
@@ -11,7 +11,6 @@
       <div v-if="jsonContent.completed !== undefined">
         <strong>Completado:</strong> {{ jsonContent.completed ? 'Sí' : 'No' }}
       </div>
-      <!-- Puedes seguir añadiendo más campos del JSON según sea necesario -->
     </div>
   </div>
 </template>

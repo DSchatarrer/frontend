@@ -7,6 +7,9 @@
         :jsonContent="message.jsonContent"
         :isReceived="message.isReceived"
       />
+      
+      <!-- Add ProgressBar component -->
+      <ProgressBar v-if="isProcessing" :progress="progress" :description="progressDescription" />
     </div>
     <ContainerInput
       @send-message="handleSendMessage"
@@ -17,9 +20,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, nextTick } from 'vue';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
+import ProgressBar from '@/components/ProgressBar.vue';
+import { v4 as uuidv4 } from 'uuid';
 
 interface Message {
   jsonContent: Record<string, any>;
@@ -27,13 +32,36 @@ interface Message {
 }
 
 const messages = ref<Message[]>([]);
+const isProcessing = ref(false); // Reactive property to control the progress bar visibility
+const progress = ref(0); // Reactive property to control the progress percentage
+const progressDescription = ref(''); // Reactive property to control the progress description
 
 const handleSendMessage = async (messageText: string) => {
-  // Añade el mensaje enviado por el usuario primero
-  messages.value.push({ jsonContent: { text: messageText }, isReceived: false });
+  // Genera un UUID para el mensaje del usuario
+  const userMessageId = uuidv4();
+  
+  // Añade el mensaje del usuario al array de mensajes primero, con su data_id
+  messages.value.push({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
+
+  // Fuerza la actualización de la UI inmediatamente
+  await nextTick();
+
+  // Inicia el procesamiento y resetea el progreso
+  isProcessing.value = true;
+  progress.value = 0;
+  progressDescription.value = 'Enviando mensaje...';
+
+  // Fuerza la actualización de la UI para mostrar la barra de progreso inmediatamente
+  await nextTick();
+
+  // Simula el progreso para demostración
+  setTimeout(() => {
+    progress.value = 50;
+    progressDescription.value = 'Procesando...';
+  }, 1000);
 
   try {
-    // Simula un fetch a un servidor y convierte la respuesta en JSON
+    // Simula un fetch a un servidor y convierte la respuesta a JSON
     const response = await fetch('https://jsonplaceholder.typicode.com/todos/1', {
       method: 'GET',
       headers: {
@@ -46,22 +74,39 @@ const handleSendMessage = async (messageText: string) => {
     }
 
     const data = await response.json(); // Convierte la respuesta a JSON
-    
-    // Añade la respuesta del servidor al array de mensajes
-    messages.value.push({ jsonContent: data, isReceived: true });
+
+    // Genera un UUID para el mensaje de respuesta del servidor
+    const serverMessageId = uuidv4();
+
+    // Simula un retraso para mostrar la barra de progreso antes de añadir el mensaje
+    setTimeout(() => {
+      // Añade la respuesta del servidor al array de mensajes con su data_id
+      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId }, isReceived: true });
+
+      // Completa el progreso
+      progress.value = 100;
+      progressDescription.value = 'Completado';
+    }, 500); // Ajusta el retraso según sea necesario
   } catch (error) {
     console.error('Error fetching data:', error);
+    progressDescription.value = 'Ocurrió un error';
+  } finally {
+    setTimeout(() => {
+      isProcessing.value = false;
+      progress.value = 0;
+      progressDescription.value = '';
+    }, 1000); // Oculta la barra de progreso después de un breve retraso
   }
 };
 
 const handleUploadFile = (files: FileList) => {
   console.log('Archivos seleccionados:', files);
-  // Aquí puedes agregar lógica para manejar los archivos subidos.
+  // Here you can add logic to handle file uploads.
 };
 
 const handleToggleRecording = (isRecording: boolean) => {
   console.log('Grabación activa:', isRecording);
-  // Aquí puedes agregar lógica para manejar la grabación de audio.
+  // Here you can add logic to handle audio recording.
 };
 </script>
 
@@ -80,6 +125,6 @@ const handleToggleRecording = (isRecording: boolean) => {
 .chat-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 80px; /* Asegura espacio para el input */
+  padding-bottom: 80px; /* Ensures space for the input */
 }
 </style>
