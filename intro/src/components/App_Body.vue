@@ -1,30 +1,47 @@
-<template>
+<!-- src\components\App_Body.vue -->
+
+<<template>
   <div class="body">
-    <Chatbot />
-    <Visualizer />
+    <Chatbot @url-click="showVisualizer" />
+    <Visualizer :isVisible="isVisualizerVisible" :url="selectedUrl" @close-visualizer="hideVisualizer" />
   </div>
 </template>
 
-
-
 <script setup>
-import Chatbot from '@/components/Chatbot.vue'
-import Visualizer from '@/components/Visualizer.vue'
+import { ref } from 'vue';
+import Chatbot from '@/components/Chatbot.vue';
+import Visualizer from '@/components/Visualizer.vue';
+
+const isVisualizerVisible = ref(false);
+const selectedUrl = ref('');
+
+const showVisualizer = (url: string) => {
+  selectedUrl.value = url;
+  isVisualizerVisible.value = true;
+};
+
+const hideVisualizer = () => {
+  isVisualizerVisible.value = false;
+  selectedUrl.value = ''; // Limpia la URL cuando se oculta el visualizador
+};
 </script>
 
 <style scoped>
 .body {
-  display: flex; /* Utiliza flexbox para alinear los dos componentes lado a lado */
-  flex-grow: 1; /* Ocupa todo el espacio restante */
-  width: calc(100% - 2px); /* Ajusta el ancho considerando el sidebar colapsado */
-  height: calc(100% - 50px); /* Ajusta la altura considerando el header */
+  display: flex;
+  flex-grow: 1;
+  width: calc(100% - 2px);
+  height: calc(100% - 50px);
   box-sizing: border-box;
-  overflow: auto; /* Asegura que se pueda hacer scroll si el contenido es demasiado grande */
-  margin: 0px; /* Empuja el contenido hacia la derecha para que no quede debajo del sidebar */
+  overflow: hidden;
+  margin: 0px;
   padding: 1px;
   border-radius: 10px;
-  background-color: #ffffff; /* Fondo blanco para el contenido */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), /* Sombra principal */
-              0 6px 20px rgba(0, 0, 0, 0.1); /* Sombra extendida */
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
+              0 6px 20px rgba(0, 0, 0, 0.1);
 }
 </style>
+
+
+
