@@ -38,7 +38,6 @@
 import sentLogo from '@/assets/responsable.png';
 import receivedLogo from '@/assets/logo2.png';
 
-
 const { jsonContent, isReceived } = defineProps<{
   jsonContent: Record<string, any>;
   isReceived?: boolean;
@@ -47,7 +46,7 @@ const { jsonContent, isReceived } = defineProps<{
 const emit = defineEmits(['url-click']);
 
 const handleUrlClick = (url: string) => {
-  emit('url-click', url);
+  emit('url-click', url); // Emitir el evento desde MessageItem.vue
 };
 </script>
 
@@ -113,3 +112,4 @@ a {
   white-space: nowrap;
 }
 </style>
+

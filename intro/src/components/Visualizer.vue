@@ -42,5 +42,3 @@ const closeVisualizer = () => {
   cursor: pointer;
 }
 </style>
-
-

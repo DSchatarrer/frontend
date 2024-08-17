@@ -21,11 +21,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, defineEmits } from 'vue';
+import { ref, nextTick } from 'vue';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { v4 as uuidv4 } from 'uuid';
+
+// Define `emit` para poder emitir eventos a los componentes padres.
+const emit = defineEmits(['url-click']);
 
 interface Message {
   jsonContent: Record<string, any>;
@@ -37,11 +40,10 @@ const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
 
-// Aquí solo manejamos el evento de URL y lo emitimos hacia el padre
-const emit = defineEmits(['url-click']);
-
+// Manejar el evento url-click aquí
 const handleUrlClick = (url: string) => {
-  emit('url-click', url);
+  console.log('URL clicked:', url);
+  emit('url-click', url); // Emite el evento hacia el padre (App_Body.vue)
 };
 
 const handleSendMessage = async (messageText: string) => {
@@ -68,7 +70,7 @@ const handleSendMessage = async (messageText: string) => {
         'Content-Type': 'application/json',
       },
     });
-    
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -124,4 +126,3 @@ const handleToggleRecording = (isRecording: boolean) => {
   margin: 0 auto; /* Centra el contenido horizontalmente */
 }
 </style>
-
