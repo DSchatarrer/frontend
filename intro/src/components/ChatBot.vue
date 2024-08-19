@@ -21,13 +21,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, onMounted } from 'vue';
+import { useSessionStore } from '@/stores/useSessionStore';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { v4 as uuidv4 } from 'uuid';
 
-// Define `emit` para poder emitir eventos a los componentes padres.
 const emit = defineEmits(['url-click']);
 
 interface Message {
@@ -39,6 +39,13 @@ const messages = ref<Message[]>([]);
 const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
+
+const sessionStore = useSessionStore();
+
+onMounted(() => {
+  sessionStore.loadSessionKey();
+  console.log('Sesión cargada con sessionKey:', sessionStore.sessionKey);
+});
 
 // Manejar el evento url-click aquí
 const handleUrlClick = (url: string) => {

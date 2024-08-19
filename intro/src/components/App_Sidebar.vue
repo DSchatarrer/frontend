@@ -1,3 +1,5 @@
+<!-- src\components\App_Sidebar.vue -->
+
 <template>
   <nav class="nav__cont">
     <ul class="nav">
@@ -20,7 +22,7 @@
         </a>
       </li>
       <li class="nav__items">
-        <a href="#">
+        <a href="#" @click.prevent="createNewSession">
           <img src="@/assets/icons/plus.svg" alt="Plus Icon" />
           <span>New</span>
         </a>
@@ -34,6 +36,18 @@
     </ul>
   </nav>
 </template>
+
+<script setup lang="ts">
+import { useSessionStore } from '@/stores/useSessionStore';
+
+const sessionStore = useSessionStore();
+
+const createNewSession = () => {
+  sessionStore.createSessionKey();
+  console.log('Nueva sesión creada con sessionKey:', sessionStore.sessionKey);
+};
+</script>
+
 
 <style scoped>
 .nav__cont {
