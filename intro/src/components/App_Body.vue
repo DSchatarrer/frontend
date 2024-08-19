@@ -39,7 +39,7 @@ const hideVisualizer = () => {
   margin: 0px;
   padding: 1px;
   border-radius: 10px;
-  background-color: #ffffff;
+  background-color: rgba(76, 82, 83, 0.24);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1),
               0 6px 20px rgba(0, 0, 0, 0.1);
 }

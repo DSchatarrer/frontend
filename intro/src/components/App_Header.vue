@@ -2,11 +2,15 @@
   <header class="header">
     <div class="zona_izquierda">
       <div class="separator"></div>
+      <img src="@/assets/logo.png" alt="Logo" class="logo">
+      <div class="separator2"></div>
+      <div class="zona_izquierda"></div>
       <nav>
         <ul class="appname" ref="pakia" @click.prevent="preventRedirection">
           <li>
             <a id="pakiaButton" href="#home" ref="pakiaLink">PROYECTO</a>
           </li>
+          <img src="@/assets/icons/safe.svg" alt="Logo" class="logosec">
         </ul>
       </nav>
     </div>
@@ -100,6 +104,15 @@ onUnmounted(() => {
   margin-right: 15px;
 }
 
+.separator2{
+  height: 30px;
+  width: 2px;
+  background-color: #D5D5D5;
+  margin-right: 25px;
+  margin-left: 25px;
+}
+
+
 .appname {
   display: flex;
   align-items: center;
@@ -163,5 +176,17 @@ nav ul li a {
 
 .nav__cont ~ .header .zona_izquierda {
   --sidebar-width: 50px; /* Ancho del sidebar colapsado */
+}
+
+.logosec{
+  height: 35px;
+  width: 30px;
+}
+
+.logo{
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 35px;
+  width: 150px;
 }
 </style>

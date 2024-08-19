@@ -80,7 +80,7 @@ const handleSendMessage = async (messageText: string) => {
     const serverMessageId = uuidv4();
 
     setTimeout(() => {
-      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://google.es"] }, isReceived: true });
+      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
 
       progress.value = 100;
       progressDescription.value = 'Completado';
@@ -120,9 +120,11 @@ const handleToggleRecording = (isRecording: boolean) => {
 
 .chat-content {
   flex: 1;
-  width: 55%; /* Ajusta el ancho al 70% */
+  width: 90%; /* Ajusta el ancho al 90% */
+  max-width: 1000px; /* Mantiene un ancho máximo igual al input-container */
   overflow-y: auto;
-  padding-bottom: 80px;
+  padding-bottom: 50px;
   margin: 0 auto; /* Centra el contenido horizontalmente */
+  margin-bottom: 30px;
 }
 </style>

@@ -5,6 +5,13 @@
     <button class="close-button" @click="closeVisualizer">✖</button>
     <h3>Visualizer Content</h3>
     <p>Currently showing content for: <strong>{{ url }}</strong></p>
+    <iframe 
+      v-if="url" 
+      :src="`${url}?igu=1`" 
+      class="content-frame" 
+      frameborder="0"
+      allowfullscreen>
+    </iframe>
   </div>
 </template>
 
@@ -40,5 +47,13 @@ const closeVisualizer = () => {
   border: none;
   font-size: 20px;
   cursor: pointer;
+}
+
+.content-frame {
+  width: 95%;
+  height: 75%; /* Cambia la altura a 400px o el valor que prefieras */
+  border: none;
+  overflow: auto;
+  margin-top: 20px; /* Espacio entre el contenido y el iframe */
 }
 </style>
