@@ -2,7 +2,7 @@
 
 <template>
   <div class="chatbot">
-    <div class="chat-content">
+    <div class="chat-content" ref="chatContent">
       <MessageItem
         v-for="(message, index) in messages"
         :key="index"
@@ -36,15 +36,29 @@ const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
 
+const chatContent = ref<HTMLElement | null>(null);
+
+const scrollToBottom = () => {
+  if (chatContent.value) {
+    chatContent.value.scrollTop = chatContent.value.scrollHeight;
+  }
+};
+
 onMounted(() => {
   sessionStore.loadSessionKey();
   console.log('Sesión cargada con sessionKey:', sessionStore.currentSessionKey);
+  scrollToBottom(); // Asegura que la vista esté al final al cargar
 });
 
 // Observa los cambios en la sesión actual y actualiza los mensajes
 watch(() => sessionStore.currentSessionKey, () => {
   console.log('Cambió la sesión, cargando mensajes para:', sessionStore.currentSessionKey);
+  nextTick(() => scrollToBottom());
 });
+
+watch(messages, () => {
+  nextTick(() => scrollToBottom());
+}, { deep: true });
 
 // Manejar el evento url-click aquí
 const handleUrlClick = (url: string) => {
@@ -112,7 +126,6 @@ const handleToggleRecording = (isRecording: boolean) => {
 };
 </script>
 
-
 <style scoped>
 .chatbot {
   display: flex;
@@ -130,8 +143,7 @@ const handleToggleRecording = (isRecording: boolean) => {
   width: 90%; /* Ajusta el ancho al 90% */
   max-width: 1000px; /* Mantiene un ancho máximo igual al input-container */
   overflow-y: auto;
-  padding-bottom: 50px;
   margin: 0 auto; /* Centra el contenido horizontalmente */
-  margin-bottom: 30px;
+  margin-bottom: 80px;
 }
 </style>

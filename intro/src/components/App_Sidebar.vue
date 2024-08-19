@@ -33,11 +33,18 @@
           <span>Attachments</span>
         </a>
       </li>
-      <li class="nav__items" v-for="sessionKey in sessionKeys" :key="sessionKey">
-        <a href="#" @click.prevent="switchSession(sessionKey)">
-          <img src="@/assets/icons/session.svg" alt="Session Icon" />
-          <span>{{ sessionKey }}</span>
+      <li class="nav__items">
+        <a href="#" @click.prevent="toggleSessionDropdown">
+          <img src="@/assets/icons/session.svg" alt="Sessions Icon" />
+          <span>Sesiones</span>
         </a>
+        <ul v-if="showSessionsDropdown" class="session-dropdown">
+          <li class="session-item" v-for="sessionKey in sessionKeys" :key="sessionKey" :title="sessionKey">
+            <a href="#" @click.prevent="switchSession(sessionKey)">
+              {{ sessionKey.substring(0, 12) }}...
+            </a>
+          </li>
+        </ul>
       </li>
     </ul>
   </nav>
@@ -49,6 +56,7 @@ import { useSessionStore } from '@/stores/useSessionStore';
 
 const sessionStore = useSessionStore();
 const sessionKeys = ref<string[]>([]);
+const showSessionsDropdown = ref(false);
 
 const createNewSession = () => {
   sessionStore.createSession();
@@ -57,6 +65,10 @@ const createNewSession = () => {
 
 const switchSession = (sessionKey: string) => {
   sessionStore.switchSession(sessionKey);
+};
+
+const toggleSessionDropdown = () => {
+  showSessionsDropdown.value = !showSessionsDropdown.value;
 };
 
 onMounted(() => {
@@ -92,6 +104,7 @@ onMounted(() => {
 
 .nav__items {
   padding-bottom: 2rem;
+  position: relative;
 }
 
 .nav__items a {
@@ -131,5 +144,33 @@ onMounted(() => {
 
 .nav__items a:hover img {
   transform: scale(1.2);
+}
+
+.session-dropdown {
+  list-style-type: none;
+  padding: 5px; /* Añadido padding */
+  margin: 0;
+  background-color: #2a2a2a;
+  border-radius: 5px;
+  position: absolute;
+  left: 55px; /* Ajusta la posición del dropdown */
+  top: 40px; /* Coloca el dropdown justo debajo de "Sesiones" */
+  z-index: 200;
+  width: 65%; /* Ancho del dropdown */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añadir sombra */
+}
+
+.session-item {
+  padding: 8px 12px; /* Ajustado para hacer las opciones más pequeñas */
+}
+
+.session-item a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9em; /* Tamaño de fuente reducido */
+}
+
+.session-item a:hover {
+  color: #54a4ff;
 }
 </style>
