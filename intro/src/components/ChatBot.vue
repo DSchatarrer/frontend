@@ -27,6 +27,7 @@ import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 
 const emit = defineEmits(['url-click']);
 
@@ -84,18 +85,13 @@ const handleSendMessage = async (messageText: string) => {
   }, 1000);
 
   try {
-    const response = await fetch('https://jsonplaceholder.typicode.com/todos/1', {
-      method: 'GET',
+    const response = await axios.get('https://jsonplaceholder.typicode.com/todos/1', {
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
-    const data = await response.json();
+    const data = response.data;
 
     const serverMessageId = uuidv4();
 
@@ -116,6 +112,7 @@ const handleSendMessage = async (messageText: string) => {
     }, 1000);
   }
 };
+
 
 const handleUploadFile = (files: FileList) => {
   console.log('Archivos seleccionados:', files);

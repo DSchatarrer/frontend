@@ -11,8 +11,8 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "preserve",
-    "baseUrl": ".",  // Agregado
-    "paths": {       // Agregado
+    "baseUrl": ".",
+    "paths": { 
       "@/*": ["src/*"]
     },
     "strict": true,
