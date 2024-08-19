@@ -4,7 +4,7 @@
   <div class="chatbot">
     <div class="chat-content">
       <MessageItem
-        v-for="(message, index) in messages"
+        v-for="(message, index) in currentMessages"
         :key="index"
         :jsonContent="message.jsonContent"
         :isReceived="message.isReceived"
@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted } from 'vue';
+import { ref, nextTick, computed, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/useSessionStore';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
@@ -29,33 +29,27 @@ import ProgressBar from '@/components/ProgressBar.vue';
 import { v4 as uuidv4 } from 'uuid';
 
 const emit = defineEmits(['url-click']);
+const sessionStore = useSessionStore();
 
-interface Message {
-  jsonContent: Record<string, any>;
-  isReceived: boolean;
-}
-
-const messages = ref<Message[]>([]);
 const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
 
-const sessionStore = useSessionStore();
-
 onMounted(() => {
   sessionStore.loadSessionKey();
-  console.log('Sesión cargada con sessionKey:', sessionStore.sessionKey);
+  console.log('Sesión cargada con sessionKey:', sessionStore.currentSessionKey);
 });
 
-// Manejar el evento url-click aquí
+const currentMessages = computed(() => sessionStore.getCurrentMessages());
+
 const handleUrlClick = (url: string) => {
   console.log('URL clicked:', url);
-  emit('url-click', url); // Emite el evento hacia el padre (App_Body.vue)
+  emit('url-click', url);
 };
 
 const handleSendMessage = async (messageText: string) => {
   const userMessageId = uuidv4();
-  messages.value.push({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
+  sessionStore.addMessage({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
 
   await nextTick();
 
@@ -87,7 +81,7 @@ const handleSendMessage = async (messageText: string) => {
     const serverMessageId = uuidv4();
 
     setTimeout(() => {
-      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
+      sessionStore.addMessage({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
 
       progress.value = 100;
       progressDescription.value = 'Completado';
@@ -127,11 +121,11 @@ const handleToggleRecording = (isRecording: boolean) => {
 
 .chat-content {
   flex: 1;
-  width: 90%; /* Ajusta el ancho al 90% */
-  max-width: 1000px; /* Mantiene un ancho máximo igual al input-container */
+  width: 90%;
+  max-width: 1000px;
   overflow-y: auto;
   padding-bottom: 50px;
-  margin: 0 auto; /* Centra el contenido horizontalmente */
+  margin: 0 auto;
   margin-bottom: 30px;
 }
 </style>

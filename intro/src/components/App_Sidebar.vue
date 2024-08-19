@@ -27,10 +27,10 @@
           <span>New</span>
         </a>
       </li>
-      <li class="nav__items">
-        <a href="#">
+      <li class="nav__items" v-for="conversation in sessionStore.conversations" :key="conversation.sessionKey">
+        <a href="#" @click.prevent="switchSession(conversation.sessionKey)">
           <img src="@/assets/icons/attachment.svg" alt="Attachment Icon" />
-          <span>Attachments</span>
+          <span>Session {{ conversation.sessionKey }}</span>
         </a>
       </li>
     </ul>
@@ -44,7 +44,12 @@ const sessionStore = useSessionStore();
 
 const createNewSession = () => {
   sessionStore.createSessionKey();
-  console.log('Nueva sesión creada con sessionKey:', sessionStore.sessionKey);
+  console.log('Nueva sesión creada con sessionKey:', sessionStore.currentSessionKey);
+};
+
+const switchSession = (sessionKey: string) => {
+  sessionStore.switchSession(sessionKey);
+  console.log('Cambió a la sesión con sessionKey:', sessionKey);
 };
 </script>
 
