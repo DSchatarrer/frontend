@@ -1,3 +1,5 @@
+<!-- src\components\App_Chat.vue -->
+
 <template>
   <div class="app-container">
     <!-- Sidebar -->
