@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, onMounted, watch } from 'vue';
+import { ref, nextTick, onMounted, watch, computed } from 'vue';
 import { useSessionStore } from '@/stores/useSessionStore';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
@@ -30,26 +30,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 const emit = defineEmits(['url-click']);
 
-interface Message {
-  jsonContent: Record<string, any>;
-  isReceived: boolean;
-}
-
-const messages = ref<Message[]>([]);
+const sessionStore = useSessionStore();
+const messages = computed(() => sessionStore.getMessages());
 const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
 
-const sessionStore = useSessionStore();
-
 onMounted(() => {
   sessionStore.loadSessionKey();
-  console.log('Sesión cargada con sessionKey:', sessionStore.sessionKey);
+  console.log('Sesión cargada con sessionKey:', sessionStore.currentSessionKey);
 });
 
-// Observa los cambios en sessionStore para limpiar los mensajes cuando se cree una nueva sesión
-watch(() => sessionStore.sessionKey, () => {
-  messages.value = []; // Limpia los mensajes cuando cambia la sessionKey
+// Observa los cambios en la sesión actual y actualiza los mensajes
+watch(() => sessionStore.currentSessionKey, () => {
+  console.log('Cambió la sesión, cargando mensajes para:', sessionStore.currentSessionKey);
 });
 
 // Manejar el evento url-click aquí
@@ -60,7 +54,7 @@ const handleUrlClick = (url: string) => {
 
 const handleSendMessage = async (messageText: string) => {
   const userMessageId = uuidv4();
-  messages.value.push({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
+  sessionStore.addMessage({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
 
   await nextTick();
 
@@ -92,7 +86,7 @@ const handleSendMessage = async (messageText: string) => {
     const serverMessageId = uuidv4();
 
     setTimeout(() => {
-      messages.value.push({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
+      sessionStore.addMessage({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
 
       progress.value = 100;
       progressDescription.value = 'Completado';
@@ -117,6 +111,7 @@ const handleToggleRecording = (isRecording: boolean) => {
   console.log('Grabación activa:', isRecording);
 };
 </script>
+
 
 <style scoped>
 .chatbot {

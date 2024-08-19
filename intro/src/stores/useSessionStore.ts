@@ -3,27 +3,57 @@
 import { defineStore } from 'pinia';
 import { v4 as uuidv4 } from 'uuid';
 
+interface Message {
+  jsonContent: Record<string, any>;
+  isReceived: boolean;
+}
+
+interface Session {
+  sessionKey: string;
+  messages: Message[];
+}
+
 export const useSessionStore = defineStore('session', {
   state: () => ({
-    sessionKey: '' as string,
+    sessions: {} as Record<string, Session>,
+    currentSessionKey: '' as string,
   }),
   actions: {
-    createSessionKey() {
+    createSession() {
       const newSessionKey = uuidv4();
-      this.sessionKey = newSessionKey;
-      localStorage.setItem('sessionKey', newSessionKey);
+      this.sessions[newSessionKey] = { sessionKey: newSessionKey, messages: [] };
+      this.currentSessionKey = newSessionKey;
+      localStorage.setItem('currentSessionKey', newSessionKey);
     },
     loadSessionKey() {
-      const storedSessionKey = localStorage.getItem('sessionKey');
-      if (storedSessionKey) {
-        this.sessionKey = storedSessionKey;
+      const storedSessionKey = localStorage.getItem('currentSessionKey');
+      if (storedSessionKey && this.sessions[storedSessionKey]) {
+        this.currentSessionKey = storedSessionKey;
       } else {
-        this.createSessionKey();
+        this.createSession();
       }
     },
-    resetSessionKey() {
-      this.createSessionKey();
-      console.log('Nueva sesión creada con sessionKey:', this.sessionKey);
+    switchSession(sessionKey: string) {
+      if (this.sessions[sessionKey]) {
+        this.currentSessionKey = sessionKey;
+        localStorage.setItem('currentSessionKey', sessionKey);
+      }
+    },
+    addMessage(message: Message) {
+      if (this.currentSessionKey) {
+        this.sessions[this.currentSessionKey].messages.push(message);
+      }
+    },
+    getMessages() {
+      return this.currentSessionKey ? this.sessions[this.currentSessionKey].messages : [];
+    },
+    clearMessages() {
+      if (this.currentSessionKey) {
+        this.sessions[this.currentSessionKey].messages = [];
+      }
+    },
+    getSessionKeys() {
+      return Object.keys(this.sessions);
     }
   },
 });

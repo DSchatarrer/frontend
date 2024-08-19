@@ -33,18 +33,36 @@
           <span>Attachments</span>
         </a>
       </li>
+      <li class="nav__items" v-for="sessionKey in sessionKeys" :key="sessionKey">
+        <a href="#" @click.prevent="switchSession(sessionKey)">
+          <img src="@/assets/icons/session.svg" alt="Session Icon" />
+          <span>{{ sessionKey }}</span>
+        </a>
+      </li>
     </ul>
   </nav>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
 import { useSessionStore } from '@/stores/useSessionStore';
 
 const sessionStore = useSessionStore();
+const sessionKeys = ref<string[]>([]);
 
 const createNewSession = () => {
-  sessionStore.resetSessionKey();  // Resetea la sessionKey y limpia los mensajes
+  sessionStore.createSession();
+  sessionKeys.value = sessionStore.getSessionKeys();
 };
+
+const switchSession = (sessionKey: string) => {
+  sessionStore.switchSession(sessionKey);
+};
+
+onMounted(() => {
+  sessionStore.loadSessionKey();
+  sessionKeys.value = sessionStore.getSessionKeys();
+});
 </script>
 
 <style scoped>
