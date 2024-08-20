@@ -3,11 +3,11 @@
 <template>
   <div class="progress-container">
     <div class="progress-bar">
-      <div class="progress-bar-fill" :style="{ width: progress + '%' }">
-        <div class="progress-bar-text" v-if="progress > 0">{{ progress }}%</div>
+      <div class="progress-bar-fill" :style="{ width: props.progress + '%' }">
+        <div class="progress-bar-text" v-if="props.progress > 0">{{ props.progress }}%</div>
       </div>
     </div>
-    <div class="progress-description" v-if="progress > 0">{{ description }}</div>
+    <div class="progress-description" v-if="props.progress > 0">{{ props.description }}</div>
   </div>
 </template>
 

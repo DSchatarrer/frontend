@@ -184,9 +184,9 @@ nav ul li a {
 }
 
 .logo{
-  padding-left: 10px;
+  padding-left: 30px;
   padding-right: 10px;
   height: 35px;
-  width: 150px;
+  width: 100px;
 }
 </style>

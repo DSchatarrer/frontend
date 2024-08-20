@@ -9,10 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tato30/vue-pdf": "^1.11.0",
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.4",
     "mammoth": "^1.8.0",
-    "pdfjs-dist": "3.5.141",
     "pinia": "^2.2.2",
     "socket.io-client": "^4.7.5",
     "tippy.js": "^6.3.7",
@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.3.0",
+    "@types/pdfjs-dist": "^2.10.378",
     "@vitejs/plugin-vue": "^5.1.2",
     "typescript": "^5.5.3",
     "vite": "^5.4.1",
