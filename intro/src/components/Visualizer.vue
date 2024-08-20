@@ -4,9 +4,10 @@
   <div v-if="isVisible" class="visualizer">
     <button class="close-button" @click="closeVisualizer">✖</button>
     <h3>Visualizer Content</h3>
-    <p>Currently showing content for: <strong>{{ url }}</strong></p>
+    <p>Currently showing content for: <strong>{{ props.url }}</strong></p>
     <iframe 
       v-if="url" 
+      :key="url"
       :src="`${url}?igu=1`" 
       class="content-frame" 
       frameborder="0"

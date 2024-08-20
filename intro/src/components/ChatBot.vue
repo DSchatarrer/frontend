@@ -96,7 +96,9 @@ const handleSendMessage = async (messageText: string) => {
     const serverMessageId = uuidv4();
 
     setTimeout(() => {
-      sessionStore.addMessage({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://www.google.es/"] }, isReceived: true });
+      sessionStore.addMessage({ jsonContent: { ...data, data_id: serverMessageId, urls: ["https://arxiv.org/pdf/2304.11477#page=7",
+                                                                                        "https://arxiv.org/pdf/2304.11477#page=2",
+                                                                                        "https://filesamples.com/samples/document/docx/sample3.docx"] }, isReceived: true });
 
       progress.value = 100;
       progressDescription.value = 'Completado';

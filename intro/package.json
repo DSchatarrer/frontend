@@ -11,6 +11,8 @@
   "dependencies": {
     "@types/uuid": "^10.0.0",
     "axios": "^1.7.4",
+    "mammoth": "^1.8.0",
+    "pdfjs-dist": "3.5.141",
     "pinia": "^2.2.2",
     "socket.io-client": "^4.7.5",
     "tippy.js": "^6.3.7",
