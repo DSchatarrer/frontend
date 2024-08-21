@@ -85,7 +85,7 @@ onMounted(() => {
   width: 50px; /* Ancho inicial reducido */
   height: 100vh;
   z-index: 100;
-  background-color: #1a1a1a;
+  background-color: white;
   overflow: hidden;
   transition: width 0.3s ease;
   box-shadow: 4px 7px 10px rgba(0, 0, 0, 0.4);
@@ -111,7 +111,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   padding: 10px 15px;
-  color: white;
+  color: #016a7f;
   font-weight: 400;
   font-size: 1.15em;
   text-decoration: none;
@@ -153,7 +153,7 @@ onMounted(() => {
   background-color: #2a2a2a;
   border-radius: 5px;
   position: absolute;
-  left: 55px; /* Ajusta la posición del dropdown */
+  left: 60px; /* Ajusta la posición del dropdown */
   top: 40px; /* Coloca el dropdown justo debajo de "Sesiones" */
   z-index: 200;
   width: 65%; /* Ancho del dropdown */

@@ -8,7 +8,7 @@
       <nav>
         <ul class="appname" ref="pakia" @click.prevent="preventRedirection">
           <li>
-            <a id="pakiaButton" href="#home" ref="pakiaLink">PROYECTO</a>
+            <a id="pakiaButton" href="#home" ref="pakiaLink">LICITAIA</a>
           </li>
           <img src="@/assets/icons/safe.svg" alt="Logo" class="logosec">
         </ul>
@@ -82,12 +82,13 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  background-color: #202020;
-  color: #FFFFFF;
+  background-color: white;
+  color: black;
   border-bottom: 2px solid #D5D5D5;
   height: 50px;
   box-sizing: border-box;
   padding-left: 0px;
+  box-shadow: 4px 7px 10px rgba(0, 0, 0, 0.4);
 }
 
 .zona_izquierda {
@@ -117,8 +118,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   font-size: 25px;
-  font-weight: bold;
-  color: #FFFFFF;
+  /* font-weight: bold; */
+  color: black;
 }
 
 .iconosright {
@@ -131,12 +132,12 @@ onUnmounted(() => {
 .fotouser {
   height: 30px;
   border-radius: 50%;
-  border: 2px solid rgb(144, 164, 174);
+  border: 2px solid #016a7f;
   cursor: pointer;
 }
 
 .user_name {
-  color: rgb(144, 164, 174);
+  color: #016a7f;
   text-decoration: none;
   margin-left: -10px;
 }
@@ -164,9 +165,10 @@ nav ul li {
 }
 
 nav ul li a {
-  color: #FFFFFF;
+  color: black;
   text-decoration: none;
   font-weight: normal;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 /* CSS para controlar la expansión del sidebar */
