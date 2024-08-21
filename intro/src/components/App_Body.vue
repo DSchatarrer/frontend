@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import Chatbot from '@/components/Chatbot.vue';
+import Chatbot from '@/components/ChatBot.vue';
 import Visualizer from '@/components/Visualizer.vue';
 
 const isVisualizerVisible = ref(false);

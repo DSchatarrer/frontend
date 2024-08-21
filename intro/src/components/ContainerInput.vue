@@ -135,8 +135,8 @@ function toggleRecording() {
   display: flex;
   align-items: center;
   background-color: #fff;
-  border-radius: 25px;
-  padding: 10px;
+  border-radius: 17px;
+  padding: 0.1%;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%; /* Ajusta el tamaño para que ocupe el 90% del ancho */
   max-width: 1000px; /* Mantiene un ancho máximo */
@@ -150,7 +150,7 @@ function toggleRecording() {
   font-size: 16px;
   outline: none;
   background-color: #f5f5f5;
-  margin-right: 10px;
+  margin-right: 0.1%;
 }
 
 .send-button,

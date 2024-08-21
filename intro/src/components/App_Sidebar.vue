@@ -34,6 +34,12 @@
         </a>
       </li>
       <li class="nav__items">
+        <a href="#">
+          <img src="@/assets/icons/faqs.png" alt="Faqs Icon" />
+          <span>FAQs</span>
+        </a>
+      </li>
+      <li class="nav__items">
         <a href="#" @click.prevent="toggleSessionDropdown">
           <img src="@/assets/icons/session.svg" alt="Sessions Icon" />
           <span>Sesiones</span>
@@ -60,6 +66,7 @@ const showSessionsDropdown = ref(false);
 
 const createNewSession = () => {
   sessionStore.createSession();
+  sessionStore.resetWelcomeVisibility();  // Restablece la visibilidad del mensaje de bienvenida
   sessionKeys.value = sessionStore.getSessionKeys();
 };
 
@@ -76,6 +83,7 @@ onMounted(() => {
   sessionKeys.value = sessionStore.getSessionKeys();
 });
 </script>
+
 
 <style scoped>
 .nav__cont {

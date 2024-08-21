@@ -3,6 +3,8 @@
 <template>
   <div class="chatbot">
     <div class="chat-content" ref="chatContent">
+      <!-- Usar el estado de la tienda para controlar la visibilidad -->
+      <Welcome v-if="isWelcomeVisible" />
       <MessageItem
         v-for="(message, index) in messages"
         :key="index"
@@ -26,6 +28,7 @@ import { useSessionStore } from '@/stores/useSessionStore';
 import ContainerInput from '@/components/ContainerInput.vue';
 import MessageItem from '@/components/MessageItem.vue';
 import ProgressBar from '@/components/ProgressBar.vue';
+import Welcome from '@/components/Welcome.vue';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 
@@ -36,6 +39,9 @@ const messages = computed(() => sessionStore.getMessages());
 const isProcessing = ref(false);
 const progress = ref(0);
 const progressDescription = ref('');
+
+// Usar el estado isWelcomeVisible de Pinia
+const isWelcomeVisible = computed(() => sessionStore.isWelcomeVisible);
 
 const chatContent = ref<HTMLElement | null>(null);
 
@@ -68,6 +74,7 @@ const handleUrlClick = (url: string) => {
 };
 
 const handleSendMessage = async (messageText: string) => {
+  sessionStore.hideWelcome(); // Ocultar el mensaje de bienvenida
   const userMessageId = uuidv4();
   sessionStore.addMessage({ jsonContent: { text: messageText, data_id: userMessageId }, isReceived: false });
 
