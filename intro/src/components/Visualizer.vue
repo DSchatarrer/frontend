@@ -77,6 +77,7 @@ updatePageFromUrl();
   box-sizing: border-box;
   overflow: auto;
   position: relative;
+  transition: width 0.3s ease;
 }
 
 .close-button {
