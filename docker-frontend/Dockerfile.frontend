@@ -1,0 +1,42 @@
+# Usar la imagen oficial de Nginx como imagen base
+FROM nginx:1.25-alpine3.18-slim AS production-stage
+
+# Copiar la aplicación compilada desde la carpeta dist al directorio HTML de Nginx
+COPY chabot_search_template/dist /usr/share/nginx/html
+
+# Copiar el archivo de configuración personalizado de Nginx
+COPY infrastructure/nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Copiar el script de entrada
+COPY infrastructure/entrypoint.sh /
+
+# Asegurar permisos correctos para el script de entrada
+RUN chmod +x /entrypoint.sh
+
+# Crear un usuario y grupo no root para ejecutar la aplicación
+RUN addgroup -S user && adduser -S -G user user
+
+# Crear los directorios temporales necesarios y asignarles permisos
+RUN mkdir -p /tmp/client_temp \
+    && mkdir -p /tmp/proxy_temp_path \
+    && mkdir -p /tmp/fastcgi_temp \
+    && mkdir -p /tmp/uwsgi_temp \
+    && mkdir -p /tmp/scgi_temp \
+    && chown -R user:user /tmp
+
+# Actualizar y mejorar los paquetes de la imagen base
+RUN apk update && apk upgrade
+
+# Asegurar permisos correctos para los archivos y directorios necesarios
+RUN chmod -R 755 /etc/nginx/nginx.conf \
+    && chmod -R 755 /etc/nginx/mime.types \
+    && chmod -R 777 /usr/share/nginx/html
+
+# Configurar el usuario para ejecutar el contenedor
+USER user
+
+# Exponer el puerto 8888 para la aplicación
+EXPOSE 80
+
+# Configurar el script de entrada como el comando principal del contenedor
+ENTRYPOINT ["/entrypoint.sh"]
