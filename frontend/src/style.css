@@ -1,0 +1,10 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;          /* evita scroll global */
+  box-sizing: border-box;    /* asegura que el borde cuenta dentro de height/width */
+}
+*, *::before, *::after {
+  box-sizing: inherit;       /* hereda border‑box a todo */
+}
